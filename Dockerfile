@@ -1,1 +1,3 @@
 FROM httpd:2.4.37
+EXPOSE 80/tcp
+EXPOSE 8080/tcp
