@@ -1,18 +1,23 @@
-version: '3.2'
+version: '3.3'
 services:
-  vlab-service:
-    image: 'dejanstamenov/vlab-docker'
+  vlab-web-service:
+    image: 'dejanstamenov/vlab-docker:latest'
     ports:
       - target: 80
         published: 80
         protocol: tcp
         mode: ingress
     deploy:
+      mode: replicated
       replicas: 6
-      #placement: {constraints: ['node.role == manager']}
-      restart_policy: {condition: on-failure}
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 30s
+      endpoint_mode: vip
     networks:
-      - vlab-network
+      - vlab-swarm-network
 networks:
-  vlab-network:
+  vlab-swarm-network:
     driver: overlay
