@@ -1,0 +1,18 @@
+version: '3.2'
+services:
+  vlab-service:
+    image: 'dejanstamenov/vlab-docker'
+    ports:
+      - target: 80
+        published: 80
+        protocol: tcp
+        mode: ingress
+    deploy:
+      replicas: 3
+      placement: {constraints: ['node.role == manager']}
+      restart_policy: {condition: on-failure}
+    networks:
+      - vlab-network
+networks:
+  vlab-network:
+    driver: overlay
