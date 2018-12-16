@@ -1,7 +1,8 @@
 FROM ubuntu:18.04
 
 LABEL   maintainer="Dejan Stamenov" \
-        maintainer_email="stamenov.dejan@outlook.com"
+        maintainer_email="stamenov.dejan@outlook.com" \
+        version="1.0"
 
 RUN apt-get update && apt-get install -y apache2 && apt-get clean && rm -rf /var/lib/apt/lists/*
 
