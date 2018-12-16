@@ -9,6 +9,8 @@ ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
 ENV APACHE_LOG_DIR /var/log/apache2
 
+COPY ./vlab-docker-app/. /var/www/html/
+
 EXPOSE 80/tcp
 # To expose 8080/tcp port on the Apache server, the following files must be modified:
 #   - /etc/apache2/ports.conf
