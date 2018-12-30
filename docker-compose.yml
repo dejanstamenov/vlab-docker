@@ -21,3 +21,11 @@ services:
 networks:
   vlab-swarm-network:
     driver: overlay
+    ipam:
+      driver: default
+      config:
+        - subnet: 10.0.37.0/24
+    driver_opts:
+      encrypted: "true"
+      "com.docker.network.driver.mtu" : "9216"
+      "com.docker.network.bridge.enable_ip_masquerade" : "false"
