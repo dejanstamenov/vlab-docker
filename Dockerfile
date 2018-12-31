@@ -2,9 +2,12 @@ FROM ubuntu:18.04
 
 LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
-        version="1.0"
+        version="1.1"
 
-RUN apt-get update && apt-get install -y apache2 && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get --ignore-missing install -y \
+    apache2 \
+    curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 ENV APACHE_RUN_USER www-data
 ENV APACHE_RUN_GROUP www-data
