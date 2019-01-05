@@ -24,9 +24,8 @@ WORKDIR /app/solution/
 
 RUN dotnet clean \
     && dotnet build \
-    && dotnet publish ./vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
-
-COPY ./bin/Release/netcoreapp2.1/linux-x64/publish/. ../
+    && dotnet publish ./vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained \
+    && cp -r ./bin/Release/netcoreapp2.1/linux-x64/publish/. ../
 
 WORKDIR /app/
 
