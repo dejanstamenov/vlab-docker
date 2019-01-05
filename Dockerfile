@@ -20,13 +20,15 @@ RUN apt-get update \
 
 COPY ./vlab-docker-dotnet-core-stream-app/. /app/solution/
 
-WORKDIR /app/
+WORKDIR /app/solution/
 
 RUN dotnet clean \
     && dotnet build \
-    && dotnet publish ./solution/vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
+    && dotnet publish ./vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
 
-COPY ./solution/bin/Release/netcoreapp2.2/linux-x64/publish/. ../
+COPY ./bin/Release/netcoreapp2.2/linux-x64/publish/. ../
+
+WORKDIR /app/
 
 RUN rm -rd /app/solution/ \
     && chmod +x vlab-docker-dotnet-core-stream-app
