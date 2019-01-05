@@ -2,23 +2,38 @@ FROM ubuntu:18.04
 
 LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
-        version="1.1"
+        version="1.2"
 
-RUN apt-get update && apt-get --ignore-missing install -y \
-    apache2 \
-    curl \
+RUN
+    apt-get update
+    && apt-get --ignore-missing install -y \
+            curl \
+            wget \
+            software-properties-common \
+            apt-transport-https \
+    && wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb
+    && dpkg -i packages-microsoft-prod.deb
+    && add-apt-repository universe
+    && apt-get update
+    && apt-get install aspnetcore-runtime-2.2
     && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && mkdir /app /app/solution/
 
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
+COPY ./vlab-docker-dotnet-core-stream-app/. /app/solution/
 
-COPY ./vlab-docker-app/. /var/www/html/
+WORKDIR /app/
+
+RUN
+    dotnet clean
+    && dotnet build
+    && dotnet publish ./solution/vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
+
+COPY ./solution/bin/Release/netcoreapp2.2/linux-x64/publish/. ../
+
+RUN
+    rm -rd /app/solution/
+    && chmod +x vlab-docker-dotnet-core-stream-app
 
 EXPOSE 80/tcp
-# To expose 8080/tcp port on the Apache server, the following files must be modified:
-#   - /etc/apache2/ports.conf
-#   - /etc/apache2/sites-enabled/000-default.conf
-#EXPOSE 8080/tcp
 
-CMD ["apachectl", "-D", "FOREGROUND"]
+CMD nohup ./vlab-docker-dotnet-core-stream-app 80 > app.log &
