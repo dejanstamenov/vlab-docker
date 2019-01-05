@@ -26,7 +26,7 @@ RUN dotnet clean \
     && dotnet build \
     && dotnet publish ./vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
 
-COPY ./bin/Release/netcoreapp2.2/linux-x64/publish/. ../
+COPY ./bin/Release/netcoreapp2.1/linux-x64/publish/. ../
 
 WORKDIR /app/
 
