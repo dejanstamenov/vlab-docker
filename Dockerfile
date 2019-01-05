@@ -4,8 +4,7 @@ LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
         version="1.2"
 
-RUN
-    apt-get update
+RUN apt-get update
     && apt-get --ignore-missing install -y \
             curl \
             wget \
@@ -23,15 +22,13 @@ COPY ./vlab-docker-dotnet-core-stream-app/. /app/solution/
 
 WORKDIR /app/
 
-RUN
-    dotnet clean
+RUN dotnet clean
     && dotnet build
     && dotnet publish ./solution/vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained
 
 COPY ./solution/bin/Release/netcoreapp2.2/linux-x64/publish/. ../
 
-RUN
-    rm -rd /app/solution/
+RUN rm -rd /app/solution/
     && chmod +x vlab-docker-dotnet-core-stream-app
 
 EXPOSE 80/tcp
