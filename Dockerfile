@@ -14,7 +14,7 @@ RUN apt-get update \
     && dpkg -i packages-microsoft-prod.deb \
     && add-apt-repository universe \
     && apt-get update \
-    && apt-get install aspnetcore-runtime-2.2 \
+    && apt-get install -y aspnetcore-runtime-2.2 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
     && mkdir /app /app/solution/
 
