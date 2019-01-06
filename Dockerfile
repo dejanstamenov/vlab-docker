@@ -1,24 +1,22 @@
-FROM ubuntu:18.04
+FROM microsoft/dotnet:2.2-sdk AS build-env
+WORKDIR /app/solution/
+COPY ./vlab-docker-dotnet-core-stream-app/. /app/solution/
+RUN dotnet clean \
+    && dotnet build \
+    && dotnet publish ./vlab-docker-dotnet-core-stream-app.csproj --runtime linux-x64 --configuration Release --self-contained \
+    && cp -r ./bin/Release/netcoreapp2.1/linux-x64/publish/. ../
+WORKDIR /app/
+RUN rm -rd /app/solution/ \
+    && chmod +x vlab-docker-dotnet-core-stream-app
 
+FROM ubuntu:18.04
 LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
-        version="1.1"
-
-RUN apt-get update && apt-get --ignore-missing install -y \
-    apache2 \
-    curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-ENV APACHE_RUN_USER www-data
-ENV APACHE_RUN_GROUP www-data
-ENV APACHE_LOG_DIR /var/log/apache2
-
-COPY ./vlab-docker-app/. /var/www/html/
-
+        version="1.2"
+WORKDIR /app/
+COPY --from=build-env /app/. ./
+RUN apt-get update \
+    && apt-get --ignore-missing install -y \
+            curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
 EXPOSE 80/tcp
-# To expose 8080/tcp port on the Apache server, the following files must be modified:
-#   - /etc/apache2/ports.conf
-#   - /etc/apache2/sites-enabled/000-default.conf
-#EXPOSE 8080/tcp
-
-CMD ["apachectl", "-D", "FOREGROUND"]

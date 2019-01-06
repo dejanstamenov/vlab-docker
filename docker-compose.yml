@@ -7,9 +7,10 @@ services:
         published: 80
         protocol: tcp
         mode: ingress
+    command: nohup /app/vlab-docker-dotnet-core-stream-app 80 &
     deploy:
       mode: replicated
-      replicas: 6
+      replicas: 1
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -26,6 +27,6 @@ networks:
       config:
         - subnet: 10.0.37.0/24
     driver_opts:
-      encrypted: "true"
+      encrypted: "false"
       "com.docker.network.driver.mtu" : "9216"
       "com.docker.network.bridge.enable_ip_masquerade" : "false"
