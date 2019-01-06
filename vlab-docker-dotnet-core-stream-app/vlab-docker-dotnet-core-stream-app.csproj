@@ -5,5 +5,9 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>vlab_docker_dotnet_core_stream_app</RootNamespace>
   </PropertyGroup>
+  
+  <ItemGroup>
+    <RuntimeHostConfigurationOption Include="System.Globalization.Invariant" Value="true" />
+  </ItemGroup>
 
 </Project>
