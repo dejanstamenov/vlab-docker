@@ -20,13 +20,15 @@ LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
         version="1.2"
 
-RUN apt-get update \
-    && apt-get --ignore-missing install -y \
-            curl \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
 WORKDIR /app/
 
 COPY --from=build-env /app/. ./
+COPY ./shell-scripts/start-dotnet-app.sh ./
+
+RUN apt-get update \
+    && apt-get --ignore-missing install -y \
+            curl \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && chmod +x start-dotnet-app.sh
 
 EXPOSE 80/tcp
