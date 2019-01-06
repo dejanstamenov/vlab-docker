@@ -7,7 +7,7 @@ services:
         published: 80
         protocol: tcp
         mode: ingress
-    command: bash -c "/app/start-dotnet-app.sh"
+    command: nohup /app/vlab-docker-dotnet-core-stream-app 80 &
     deploy:
       mode: replicated
       replicas: 1
