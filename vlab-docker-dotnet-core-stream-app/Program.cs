@@ -1,4 +1,5 @@
 ﻿using System;
+using vlab_docker_dotnet_core_stream_app.ServerModes;
 
 namespace vlab_docker_dotnet_core_stream_app
 {
@@ -17,6 +18,7 @@ namespace vlab_docker_dotnet_core_stream_app
             }
 
             TCPServerSync tcpServerSync = new TCPServerSync(Convert.ToInt32(args[0]));
+            tcpServerSync.RunServerSync();
         }
     }
 }

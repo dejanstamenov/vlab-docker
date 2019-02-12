@@ -4,7 +4,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace vlab_docker_dotnet_core_stream_app
+namespace vlab_docker_dotnet_core_stream_app.ServerModes
 {
     public class TCPServerSync
     {
@@ -12,19 +12,20 @@ namespace vlab_docker_dotnet_core_stream_app
         private bool acceptUserRequests;
         private int serverPortNumber;
 
+        public TCPServerSync() { }
+
         public TCPServerSync(int serverPortNumber)
         {
             this.serverPortNumber = serverPortNumber;
             acceptUserRequests = true;
-            RunServerSync();
+            serverListener = new TcpListener(IPAddress.Any, this.serverPortNumber);
         }
-
-        private void RunServerSync()
+        
+        public void RunServerSync()
         {
             try
             {
                 Console.WriteLine($"Starting TCP server on port: {serverPortNumber}..");
-                serverListener = new TcpListener(IPAddress.Any, serverPortNumber);
                 serverListener.Start();
                 Console.WriteLine($"TCP server started. Awaiting client connection.");
 
@@ -50,49 +51,35 @@ namespace vlab_docker_dotnet_core_stream_app
 
         private void HandleClientRequestSync(TcpClient client)
         {
-            while (acceptUserRequests)
+            try
             {
-                try
+                using (StreamReader streamReader = new StreamReader(client.GetStream(), Encoding.UTF8))
                 {
-                    using (StreamReader streamReader = new StreamReader(client.GetStream(), Encoding.UTF8))
-                    {
-                        string line = string.Empty;
+                    string clientMessage = string.Empty;
 
-                        while ((line = streamReader.ReadLine()) != null)
-                        {
-                            HandleRequest(client, line);
-                        }
-                    }
+                    while ((clientMessage = streamReader.ReadLine()) != null)
+                        HandleRequest(client, clientMessage);
                 }
-                catch (Exception ex)
+            }
+            catch (Exception ex)
+            {
+                if (!client.Connected)
                 {
-                    if (!client.Connected)
-                    {
-                        Console.WriteLine($">> Client disconnected from server.");
-                        return;
-                    }
-
-                    Console.Error.WriteLine($"Exception reading stream from client.\n{ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
+                    Console.WriteLine($">> Client disconnected from server.");
+                    return;
                 }
+
+                Console.Error.WriteLine($"Exception reading stream from client.\n{ex.Message}\n{ex.InnerException}\n{ex.StackTrace}");
             }
         }
 
-        private void HandleRequest(TcpClient client, string line)
+        private void HandleRequest(TcpClient client, string clientMessage)
         {
-            Console.WriteLine($">> Client stream data from {client.Client.RemoteEndPoint as IPEndPoint}: {line}.");
+            Console.WriteLine($">> Client stream data from {client.Client.RemoteEndPoint as IPEndPoint}: {clientMessage}.");
             SendMessageToClient(client);
             DisconnectClient(client);
         }
-
-        private void DisconnectClient(TcpClient client)
-        {
-            if (client.Connected)
-            {
-                client.Close();
-                Console.WriteLine($"Connection to client: {client.Client.RemoteEndPoint as IPEndPoint} is closed.");
-            }
-        }
-
+        
         private void SendMessageToClient(TcpClient client)
         {
             Console.WriteLine($">> Sending thank you note to client: {client.Client.RemoteEndPoint as IPEndPoint}..");
@@ -109,6 +96,15 @@ namespace vlab_docker_dotnet_core_stream_app
             else
             {
                 Console.WriteLine(">> Cannot send message - client is disconnected.");
+            }
+        }
+
+        private void DisconnectClient(TcpClient client)
+        {
+            if (client.Connected)
+            {
+                client.Close();
+                Console.WriteLine($"Connection to client: {client.Client.RemoteEndPoint as IPEndPoint} is closed.");
             }
         }
     }
