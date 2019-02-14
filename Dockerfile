@@ -21,3 +21,4 @@ RUN apt-get update \
             libssl1.0.0 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
 EXPOSE 80/tcp
+EXPOSE 5000/tcp
