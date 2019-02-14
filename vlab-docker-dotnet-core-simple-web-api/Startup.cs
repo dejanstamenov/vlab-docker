@@ -41,7 +41,7 @@ namespace vlab_docker_dotnet_core_simple_web_api
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseMvc();
         }
     }
