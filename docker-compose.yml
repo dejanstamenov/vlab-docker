@@ -1,13 +1,13 @@
 version: '3.3'
 services:
   vlab-web-service:
-    image: 'dejanstamenov/vlab-docker:latest'
+    image: 'dejanstamenov/vlab-docker:experimental'
     ports:
-      - target: 80
+      - target: 5000
         published: 80
         protocol: tcp
         mode: ingress
-    command: nohup /app/vlab-docker-dotnet-core-stream-app 80 &
+    command: nohup /app/vlab-docker-dotnet-core-simple-web-api &
     deploy:
       mode: replicated
       replicas: 1
