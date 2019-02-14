@@ -18,6 +18,6 @@ COPY --from=build-env /app/. ./
 RUN apt-get update \
     && apt-get --ignore-missing install -y \
             curl \
-            libssl1.1 \
+            libssl1.0.0 \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
 EXPOSE 80/tcp
