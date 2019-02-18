@@ -73,7 +73,7 @@ namespace vlab_docker_dotnet_core_stream_app.ServerModes
         private void HandleRequest(TcpClient client, string clientMessage)
         {
             Console.WriteLine($">> Client stream data from {client.Client.RemoteEndPoint as IPEndPoint}: {clientMessage}.");
-            SendMessageToClient(client);
+            // SendMessageToClient(client);
             DisconnectClient(client);
         }
         
