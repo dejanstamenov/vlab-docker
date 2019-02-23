@@ -12,7 +12,7 @@ RUN rm -rd /app/solution/ \
 FROM ubuntu:18.04
 LABEL   maintainer="Dejan Stamenov" \
         maintainer_email="stamenov.dejan@outlook.com" \
-        version="1.2"
+        version="1.3"
 WORKDIR /app/
 COPY --from=build-env /app/. ./
 RUN apt-get update \

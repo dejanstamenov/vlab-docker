@@ -10,6 +10,6 @@ Following Docker image tags are available:
 
 - `latest` - this is the latest **stable** image from the `master` branch in the repository. May not be complete with all the features.
 - `experimental` - use for testing purposes **only**. The image is most likely not stable.
-- `v1.2` - **preferred** image version. This is a **stable** image with all the required features.
+- `v1.3` - **preferred** image version. This is a **stable** image with all the required features.
 
 Additional details regarding the releases are available at the Wiki [page](https://github.com/dejanstamenov/vlab-docker/wiki/Release-details) of the repository.
