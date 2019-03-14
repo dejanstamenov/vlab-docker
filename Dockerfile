@@ -19,4 +19,4 @@ RUN apt-get update \
     && apt-get --ignore-missing install -y \
             curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-EXPOSE 80/tcp
+EXPOSE 80/tcp 8080/tcp
