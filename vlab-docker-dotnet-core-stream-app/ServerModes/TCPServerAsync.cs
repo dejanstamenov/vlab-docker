@@ -71,13 +71,13 @@ namespace vlab_docker_dotnet_core_stream_app.ServerModes
         private async Task HandleRequest(TcpClient client, string clientMessage)
         {
             await Console.Out.WriteLineAsync($">> Client stream data from {client.Client.RemoteEndPoint as IPEndPoint}: {clientMessage}.");
-            // SendMessageToClient(client);
+            await SendMessageToClient(client);
             await DisconnectClient(client);
         }
         
-        private void SendMessageToClient(TcpClient client)
+        private async Task SendMessageToClient(TcpClient client)
         {
-            Console.Out.WriteLineAsync($">> Sending thank you note to client: {client.Client.RemoteEndPoint as IPEndPoint}..");
+            await Console.Out.WriteLineAsync($">> Sending thank you note to client: {client.Client.RemoteEndPoint as IPEndPoint}..");
 
             if (client.Connected)
             {
@@ -86,11 +86,11 @@ namespace vlab_docker_dotnet_core_stream_app.ServerModes
                 networkStreamWriter.WriteLine("Thank you!");
                 networkStreamWriter.Flush();
 
-                Console.Out.WriteLineAsync(">> Message to the client sent!");
+                await Console.Out.WriteLineAsync(">> Message to the client sent!");
             }
             else
             {
-                Console.Out.WriteLineAsync(">> Cannot send message - client is disconnected.");
+                await Console.Out.WriteLineAsync(">> Cannot send message - client is disconnected.");
             }
         }
 
