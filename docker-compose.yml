@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   vlab-web-service:
-    image: 'dejanstamenov/vlab-docker:latest'
+    image: 'dejanstamenov/vlab-docker:v1.4'
     ports:
       - target: 80
         published: 80
