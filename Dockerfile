@@ -6,4 +6,4 @@ RUN apt-get update \
     && apt-get --ignore-missing install -y \
         netcat-openbsd \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-ENTRYPOINT ["/bin/bash"]
+CMD ["bash"]
