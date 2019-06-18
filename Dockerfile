@@ -6,5 +6,5 @@ RUN apt-get update \
     && apt-get --ignore-missing install -y \
         netcat-openbsd \
     && apt-get clean && rm -rf /var/lib/apt/lists/* \
-# CMD ["bash"]
+CMD ["tail", "-f", "/dev/null"]
 EXPOSE 8080/tcp
