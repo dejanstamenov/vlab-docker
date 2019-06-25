@@ -1,16 +1,17 @@
 version: '3.3'
 services:
   vlab-web-service:
-    image: 'dejanstamenov/vlab-docker:v1.4'
+    image: 'dejanstamenov/vlab-docker:experimental'
     ports:
-      - target: 80
-        published: 80
+      - target: 8080
+        published: 8080
         protocol: tcp
         mode: ingress
-    command: nohup /app/vlab-docker-dotnet-core-stream-app 80 &
+    command: tail -f /dev/null
+#   privileged: true
     deploy:
       mode: replicated
-      replicas: 1
+      replicas: 2
       restart_policy:
         condition: on-failure
         delay: 5s
@@ -27,6 +28,6 @@ networks:
       config:
         - subnet: 10.0.37.0/24
     driver_opts:
-      encrypted: "false"
+      encrypted: "true"
       "com.docker.network.driver.mtu" : "9216"
       "com.docker.network.bridge.enable_ip_masquerade" : "false"
